@@ -26,6 +26,7 @@
     [self.jsonData addObject:[[NSArray alloc] initWithObjects:@"Linha 5 - Coluna 1",@"Linha 5 - Coluna 2", nil]];
     
     [self.jsonArea setString:@"Paste your JSON here..."];
+    [self.statusText setStringValue:@""];
 }
 
 
@@ -47,10 +48,36 @@
 
 - (IBAction)parseJsonButtonClicked:(id)sender
 {
-    NSData * jsonString = (NSData *) [self.jsonArea string];
-    printf("%s", [(NSString *) jsonString UTF8String]);
+    NSError *jsonParsingError = nil;
+    NSData  *jsonString = [[self.jsonArea string] dataUsingEncoding:NSUTF8StringEncoding];
+    NSArray *jsonStructure = [NSJSONSerialization JSONObjectWithData:jsonString options:0 error:&jsonParsingError];
+    
+    NSDictionary *structure;
+    
+    printf("%s - %lu", [[self.jsonArea string] UTF8String], (unsigned long)[jsonStructure count]);
+    printf("\n");
+    NSLog(@"Error: %@", [jsonParsingError userInfo]);
+    
+    // Show error alert
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:@"There is an error in your JSON"];
+    [alert setInformativeText:[[jsonParsingError userInfo] objectForKey:@"NSDebugDescription"]];
+    [alert setAlertStyle:NSWarningAlertStyle];
+    [alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
+    [alert runModal];
+    
+    // Parses JSON object
+    for(int i=0; i < [jsonStructure count];i++) {
+        structure = [jsonStructure objectAtIndex:i];
+        printf("opa: %s", [[structure objectForKey:@"test"] UTF8String]);
+    }
+    
     
     [self.tableView reloadData];
+}
+
+- (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+    [[NSApplication sharedApplication] stopModal];
 }
 
 @end
