@@ -19,12 +19,6 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    [self.jsonData addObject:[[NSArray alloc] initWithObjects:@"Linha 1 - Coluna 1",@"Linha 1 - Coluna 2", nil]];
-    [self.jsonData addObject:[[NSArray alloc] initWithObjects:@"Linha 2 - Coluna 1",@"Linha 2 - Coluna 2", nil]];
-    [self.jsonData addObject:[[NSArray alloc] initWithObjects:@"Linha 3 - Coluna 1",@"Linha 3 - Coluna 2", nil]];
-    [self.jsonData addObject:[[NSArray alloc] initWithObjects:@"Linha 4 - Coluna 1",@"Linha 4 - Coluna 2", nil]];
-    [self.jsonData addObject:[[NSArray alloc] initWithObjects:@"Linha 5 - Coluna 1",@"Linha 5 - Coluna 2", nil]];
-    
     [self.jsonArea setString:@"Paste your JSON here..."];
     [self.statusText setStringValue:@""];
 }
@@ -54,26 +48,30 @@
     
     NSDictionary *structure;
     
-    printf("%s - %lu", [[self.jsonArea string] UTF8String], (unsigned long)[jsonStructure count]);
-    printf("\n");
-    NSLog(@"Error: %@", [jsonParsingError userInfo]);
-    
-    // Show error alert
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:@"There is an error in your JSON"];
-    [alert setInformativeText:[[jsonParsingError userInfo] objectForKey:@"NSDebugDescription"]];
-    [alert setAlertStyle:NSWarningAlertStyle];
-    [alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
-    [alert runModal];
-    
-    // Parses JSON object
-    for(int i=0; i < [jsonStructure count];i++) {
-        structure = [jsonStructure objectAtIndex:i];
-        printf("opa: %s", [[structure objectForKey:@"test"] UTF8String]);
+    // Is this the right way to "try-catch" on objective-c?
+    if (jsonParsingError != nil){
+        // Show error alert
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"There is an error in your JSON"];
+        [alert setInformativeText:[[jsonParsingError userInfo] objectForKey:@"NSDebugDescription"]];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
+        [alert runModal];
+        
+        return;
+        
+    } else {
+        printf("%s - %lu", [[self.jsonArea string] UTF8String], (unsigned long)[jsonStructure count]);
+        printf("\n");
+        
+        // Parses JSON object
+        for(int i=0; i < [jsonStructure count];i++) {
+            structure = [jsonStructure objectAtIndex:i];
+            [self.jsonData addObject:[structure objectForKey:@"test"]];
+        }
+        
+        [self.tableView reloadData];
     }
-    
-    
-    [self.tableView reloadData];
 }
 
 - (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {

@@ -148,17 +148,31 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="JSON" id="VO8-Oa-hgV">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="JSON" id="l2n-vm-jCv">
+                        <items>
+                            <menuItem title="Clear" keyEquivalent="X" id="YYw-7o-Slg"/>
+                            <menuItem title="Parse" keyEquivalent="P" id="4ms-1m-pst"/>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem title="Remote" id="81c-B0-caw">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Remote" id="DtC-Qv-Zd1">
+                        <items>
+                            <menuItem title="Load from webservice..." id="aOu-99-hUP">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Window" id="19">
                     <menu key="submenu" title="Window" systemMenu="window" id="24">
                         <items>
                             <menuItem title="Minimize" keyEquivalent="m" id="23">
                                 <connections>
                                     <action selector="performMiniaturize:" target="-1" id="37"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Zoom" id="239">
-                                <connections>
-                                    <action selector="performZoom:" target="-1" id="240"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -279,7 +293,7 @@
                         </scroller>
                     </scrollView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b0v-Gf-cq2">
-                        <rect key="frame" x="17" y="659" width="81" height="17"/>
+                        <rect key="frame" x="17" y="659" width="81" height="17.000000000000036"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="JSON String:" id="erY-9E-Ler">
                             <font key="font" metaFont="system"/>

@@ -18,6 +18,7 @@
 		117657BD1860B85100913243 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1176579C1860B85000913243 /* Cocoa.framework */; };
 		117657C51860B85100913243 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 117657C31860B85100913243 /* InfoPlist.strings */; };
 		117657C71860B85100913243 /* JSONViewerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 117657C61860B85100913243 /* JSONViewerTests.m */; };
+		11F7B5D418620A7B00A971E5 /* JSONViewer.icns in Resources */ = {isa = PBXBuildFile; fileRef = 11F7B5D318620A7B00A971E5 /* JSONViewer.icns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		117657C21860B85100913243 /* JSONViewerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JSONViewerTests-Info.plist"; sourceTree = "<group>"; };
 		117657C41860B85100913243 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		117657C61860B85100913243 /* JSONViewerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSONViewerTests.m; sourceTree = "<group>"; };
+		11F7B5D318620A7B00A971E5 /* JSONViewer.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = JSONViewer.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 		117657A21860B85000913243 /* JSONViewer */ = {
 			isa = PBXGroup;
 			children = (
+				11F7B5D218620A6000A971E5 /* Assets */,
 				117657AE1860B85100913243 /* AppDelegate.h */,
 				117657AF1860B85100913243 /* AppDelegate.m */,
 				117657B11860B85100913243 /* MainMenu.xib */,
@@ -152,6 +155,14 @@
 				117657C31860B85100913243 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		11F7B5D218620A6000A971E5 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				11F7B5D318620A7B00A971E5 /* JSONViewer.icns */,
+			);
+			name = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,6 +241,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11F7B5D418620A7B00A971E5 /* JSONViewer.icns in Resources */,
 				117657A71860B85100913243 /* InfoPlist.strings in Resources */,
 				117657B51860B85100913243 /* Images.xcassets in Resources */,
 				117657AD1860B85100913243 /* Credits.rtf in Resources */,
@@ -464,6 +476,7 @@
 				117657CC1860B85100913243 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		117657CD1860B85100913243 /* Build configuration list for PBXNativeTarget "JSONViewerTests" */ = {
 			isa = XCConfigurationList;
@@ -472,6 +485,7 @@
 				117657CF1860B85100913243 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
