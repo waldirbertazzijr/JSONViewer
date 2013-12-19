@@ -15,7 +15,7 @@
 
 // Other
 @property (assign) IBOutlet NSWindow *window;
-@property IBOutlet NSTextView *jsonArea;
+@property IBOutlet NSTextField *jsonArea;
 
 // Table
 @property(weak) IBOutlet NSTableView *tableView;
@@ -31,5 +31,5 @@
 - (IBAction)clearJsonAreaButtonClicked:(NSButton *)sender;
 
 // Methods
-- (void)parseJSONTree:(NSArray *)jsonArray;
+- (void)parseJSONTree:(NSArray *)jsonArray identLevel:(NSInteger)integer;
 @end

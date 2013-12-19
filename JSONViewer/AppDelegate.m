@@ -10,6 +10,13 @@
 
 @implementation AppDelegate
 
+// Type of JSON elements
+typedef enum JSONELement{
+    JSON_INTEGER,
+    JSON_ARRAY,
+    JSON_OBJECT,
+} JSONELement;
+
 // Instantiation of json array.
 -(NSMutableArray*)jsonData
 {
@@ -19,7 +26,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    [self.jsonArea setString:@"Paste your JSON here..."];
+    [self.jsonArea setStringValue:@""];
 }
 
 
@@ -29,7 +36,7 @@
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
-    NSInteger dataType = [self getDataStructureCode: NSStringFromClass([[self.jsonData objectAtIndex:row] class])];
+    JSONELement dataType = [self getDataStructureCode: NSStringFromClass([[self.jsonData objectAtIndex:row] class])];
     
     if([[tableColumn identifier] isEqualToString:[self.jsonObjectName identifier]]) { // Name...
         
@@ -55,25 +62,36 @@
 }
 
 // Helpers
-- (void)parseJSONTree:(NSArray *)jsonArray {
+- (void)parseJSONTree:(NSArray *)jsonArray identLevel:(NSInteger)identation {
+    // Debug
+    printf("%s - %lu (%s)", [[self.jsonArea stringValue] UTF8String], (unsigned long)[jsonArray count], [NSStringFromClass([jsonArray class]) UTF8String]);
+    printf("\n");
+    
     // Single Item
     NSDictionary *structure;
     
     // Parses JSON object
     for(int i=0; i < [jsonArray count];i++) {
         structure = [jsonArray objectAtIndex:i];
-        NSLog(@"Item: %@ (%s)", structure, [NSStringFromClass([structure class]) UTF8String]);
+        
+        NSInteger dataType = [self getDataStructureCode: NSStringFromClass([structure class])];
+        if (dataType == 1 || dataType == 2) {
+            
+        } else {
+            
+        }
+        
         [self.jsonData addObject:structure];
     }
 }
 
-- (NSInteger)getDataStructureCode:(NSString *)structureName {
+- (JSONELement)getDataStructureCode:(NSString *)structureName {
     if ([structureName isEqualToString:@"__NSCFNumber"]) {
-        return 0;
+        return JSON_INTEGER;
     } else if ([structureName isEqualToString:@"__NSArrayI"]) {
-        return 1;
+        return JSON_ARRAY;
     } else if ([structureName isEqualToString:@"__NSCFDictionary"]) {
-        return 2;
+        return JSON_OBJECT;
     }
     
     return -1;
@@ -81,13 +99,13 @@
 
 - (NSString *)getDataStructureName:(NSInteger)structureCode {
     switch ((int) structureCode) {
-        case 0:
+        case JSON_INTEGER:
             return @"Integer";
             break;
-        case 1:
+        case JSON_ARRAY:
             return @"Array";
             break;
-        case 2:
+        case JSON_OBJECT:
             return @"Object";
             break;
     }
@@ -98,13 +116,16 @@
 // Actions
 - (IBAction)clearJsonAreaButtonClicked:(id)sender
 {
-    [self.jsonArea setString:@"Paste your JSON here..."];
+    [self.jsonArea setStringValue:@""];
+    [_jsonData removeAllObjects];
+    [self.tableView reloadData];
+    
 }
 
 - (IBAction)parseJsonButtonClicked:(id)sender
 {
     NSError *jsonParsingError = nil;
-    NSData  *jsonString = [[self.jsonArea string] dataUsingEncoding:NSUTF8StringEncoding];
+    NSData  *jsonString = [[self.jsonArea stringValue] dataUsingEncoding:NSUTF8StringEncoding];
     NSArray *jsonStructure = [NSJSONSerialization JSONObjectWithData:jsonString options:0 error:&jsonParsingError];
     
     // Is this the right way to "try-catch" on objective-c?
@@ -120,20 +141,14 @@
         return;
         
     } else {
-        // No error so let's empty the _jsonData array...
+        // No errors so let's empty the _jsonData array...
         [_jsonData removeAllObjects];
         
-        // Debug
-        printf("%s - %lu (%s)", [[self.jsonArea string] UTF8String], (unsigned long)[jsonStructure count], [NSStringFromClass([jsonStructure class]) UTF8String]);
-        printf("\n");
-        
         // Call recursive parseJsonTree
-        [self parseJSONTree:jsonStructure];
+        [self parseJSONTree:jsonStructure identLevel:0];
         
-        // ... and of course reload table data...
+        // ... and of course reload table data.
         [self.tableView reloadData];
-        
-        // that's it!
     }
 }
 
