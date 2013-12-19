@@ -208,14 +208,15 @@
                             <rect key="frame" x="1" y="17" width="557" height="486"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnSelection="YES" autosaveColumns="NO" headerView="AwB-00-hzv" id="egr-q7-mSo">
+                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnSelection="YES" autosaveColumns="NO" headerView="AwB-00-hzv" id="egr-q7-mSo">
                                     <rect key="frame" x="0.0" y="0.0" width="557" height="486"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <tableViewGridLines key="gridStyleMask" vertical="YES"/>
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     <tableColumns>
-                                        <tableColumn width="183" minWidth="40" maxWidth="1000" id="Qax-bs-gv1">
+                                        <tableColumn identifier="jsonObjectName" width="225.84765625" minWidth="40" maxWidth="1000" id="Qax-bs-gv1">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -228,13 +229,26 @@
                                             </textFieldCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         </tableColumn>
-                                        <tableColumn width="368" minWidth="40" maxWidth="1000" id="zzm-HG-7YQ">
-                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Type">
+                                        <tableColumn identifier="jsonObjectLength" width="212.984375" minWidth="40" maxWidth="1000" id="zzm-HG-7YQ">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Length">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                             </tableHeaderCell>
                                             <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="fKq-ov-TaV">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                        <tableColumn identifier="jsonObjectType" width="109" minWidth="10" maxWidth="3.4028234663852886e+38" id="ymP-BY-N78">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Type">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                            </tableHeaderCell>
+                                            <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="BRd-PU-w6g">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -332,8 +346,9 @@
             <connections>
                 <outlet property="clearJsonArea" destination="Ina-91-fHc" id="7B9-CR-CFz"/>
                 <outlet property="jsonArea" destination="Fwq-Po-Nud" id="qlT-8k-l3l"/>
-                <outlet property="jsonObjectLenght" destination="zzm-HG-7YQ" id="kjA-Qd-saB"/>
-                <outlet property="jsonObjectTitle" destination="Qax-bs-gv1" id="Oy3-SQ-Qus"/>
+                <outlet property="jsonObjectLength" destination="zzm-HG-7YQ" id="f1k-rK-E1n"/>
+                <outlet property="jsonObjectName" destination="Qax-bs-gv1" id="E7t-4f-a6X"/>
+                <outlet property="jsonObjectType" destination="ymP-BY-N78" id="kYs-E0-ONf"/>
                 <outlet property="parseJsonArea" destination="MrH-sA-Ojv" id="8J3-R1-bpY"/>
                 <outlet property="tableView" destination="egr-q7-mSo" id="bR7-yh-2mh"/>
                 <outlet property="window" destination="371" id="532"/>
