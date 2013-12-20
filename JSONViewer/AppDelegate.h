@@ -18,7 +18,7 @@
 @property IBOutlet NSTextField *jsonArea;
 
 // Table
-@property(weak) IBOutlet NSTableView *tableView;
+@property(weak) IBOutlet NSOutlineView *tableView;
 @property(weak) IBOutlet NSTableColumn *jsonObjectName;
 @property(weak) IBOutlet NSTableColumn *jsonObjectType;
 @property(weak) IBOutlet NSTableColumn *jsonObjectLength;
