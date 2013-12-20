@@ -244,7 +244,7 @@
                             <constraint firstAttribute="height" constant="115" id="XQD-lg-FqA"/>
                         </constraints>
                         <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Enter your JSON here..." drawsBackground="YES" id="S9D-6Y-TTq">
-                            <font key="font" metaFont="system"/>
+                            <font key="font" size="10" name="Monaco"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
