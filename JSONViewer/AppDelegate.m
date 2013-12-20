@@ -10,14 +10,18 @@
 
 @implementation AppDelegate
 
+
 // Type of JSON elements
 typedef enum JSONELement{
     JSON_INTEGER,
     JSON_ARRAY,
     JSON_OBJECT,
+    JSON_STRING,
+    JSON_BOOL
 } JSONELement;
 
-// Instantiation of json array.
+
+// JSON Data MutabeArray
 -(NSMutableArray*)jsonData
 {
     if (_jsonData == nil) _jsonData = [[NSMutableArray alloc]init];
@@ -31,35 +35,69 @@ typedef enum JSONELement{
 
 
 // Table View
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return self.jsonData.count;
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
+{
+    JSONELement dataType = [self getDataStructureCode: NSStringFromClass([item class])];
+    
+    if (dataType == JSON_ARRAY || dataType == JSON_OBJECT) return YES;
+    return NO;
 }
 
-- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
-    JSONELement dataType = [self getDataStructureCode: NSStringFromClass([[self.jsonData objectAtIndex:row] class])];
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
+{
+    JSONELement dataType = [self getDataStructureCode: NSStringFromClass([item class])];
+
+    if (item == nil) { //item is nil when the outline view wants to inquire for root level items
+        return [self.jsonData count];
+    }
     
-    if([[tableColumn identifier] isEqualToString:[self.jsonObjectName identifier]]) { // Name...
+    if (dataType == JSON_ARRAY || dataType == JSON_OBJECT) {
+        return [item count];
+    }
+    
+    return 0;
+}
+
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)theColumn byItem:(id)item
+{
+    JSONELement dataType = [self getDataStructureCode: NSStringFromClass([item class])];
+    
+    if ([[theColumn identifier] isEqualToString:@"itemlength"]) { // length
         
-        if (dataType == 1 || dataType == 2) {
-            return [NSString stringWithFormat:@"%@ (%lu)", [self getDataStructureName:dataType], (unsigned long)[[self.jsonData objectAtIndex:row] count]];
-        } else {
-            return [self.jsonData objectAtIndex:row];
-        }
+        if (dataType == JSON_ARRAY || dataType == JSON_OBJECT) return [NSString stringWithFormat:@"%lu", (unsigned long)[item count]];
+        return @"-";
         
-    } else if ([[tableColumn identifier] isEqualToString:[self.jsonObjectLength identifier]]) { // Length...
-        
-        if (dataType == 1 || dataType == 2) {
-            return [NSString stringWithFormat:@"(%lu)", (unsigned long)[[self.jsonData objectAtIndex:row] count]];
-        } else {
-            return @"-";
-        }
-        
-    } else { // Type
+    } else if([[theColumn identifier] isEqualToString:@"itemtype"]) { // type
         
         return [self getDataStructureName:dataType];
         
+    } else { // name
+        
+        if (dataType == JSON_ARRAY || dataType == JSON_OBJECT)
+            return [NSString stringWithFormat:@"%@ (%lu)", [self getDataStructureName:dataType], (unsigned long)[item count]];
+        return item;
+        
     }
+    
+    return nil;
 }
+
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
+{
+    JSONELement dataType = [self getDataStructureCode: NSStringFromClass([item class])];
+    
+    if (item == nil){
+        return [self.jsonData objectAtIndex:index];
+    }
+    if (dataType == JSON_ARRAY || dataType == JSON_OBJECT) {
+        NSLog(@"%@", item);
+        return [item objectAtIndex:index];
+    }
+    return nil;
+}
+
+
+
 
 // Helpers
 - (void)parseJSONTree:(NSArray *)jsonArray identLevel:(NSInteger)identation {
@@ -73,26 +111,17 @@ typedef enum JSONELement{
     // Parses JSON object
     for(int i=0; i < [jsonArray count];i++) {
         structure = [jsonArray objectAtIndex:i];
-        
-        NSInteger dataType = [self getDataStructureCode: NSStringFromClass([structure class])];
-        if (dataType == 1 || dataType == 2) {
-            
-        } else {
-            
-        }
-        
         [self.jsonData addObject:structure];
     }
 }
 
 - (JSONELement)getDataStructureCode:(NSString *)structureName {
-    if ([structureName isEqualToString:@"__NSCFNumber"]) {
-        return JSON_INTEGER;
-    } else if ([structureName isEqualToString:@"__NSArrayI"]) {
-        return JSON_ARRAY;
-    } else if ([structureName isEqualToString:@"__NSCFDictionary"]) {
-        return JSON_OBJECT;
-    }
+    NSLog(@"%@", structureName);
+    if ([structureName isEqualToString:@"__NSCFNumber"])            return JSON_INTEGER;
+    if ([structureName isEqualToString:@"__NSArrayI"])              return JSON_ARRAY;
+    if ([structureName isEqualToString:@"__NSCFDictionary"])        return JSON_OBJECT;
+    if ([structureName isEqualToString:@"__NSCFString"])            return JSON_STRING;
+    if ([structureName isEqualToString:@"__NSCFBoolean"])           return JSON_BOOL;
     
     return -1;
 }
@@ -101,6 +130,12 @@ typedef enum JSONELement{
     switch ((int) structureCode) {
         case JSON_INTEGER:
             return @"Integer";
+            break;
+        case JSON_STRING:
+            return @"String";
+            break;
+        case JSON_BOOL:
+            return @"Boolean";
             break;
         case JSON_ARRAY:
             return @"Array";
@@ -112,6 +147,9 @@ typedef enum JSONELement{
     
     return @"Unknown";
 }
+
+
+
 
 // Actions
 - (IBAction)clearJsonAreaButtonClicked:(id)sender
