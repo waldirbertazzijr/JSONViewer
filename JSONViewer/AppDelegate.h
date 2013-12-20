@@ -11,7 +11,7 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 // JSON Data
-@property (strong, nonatomic) NSMutableArray *jsonData;
+@property (strong, nonatomic) NSArray *jsonData;
 
 // Other
 @property (assign) IBOutlet NSWindow *window;

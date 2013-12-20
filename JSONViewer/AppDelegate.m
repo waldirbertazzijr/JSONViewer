@@ -22,9 +22,9 @@ typedef enum JSONELement{
 
 
 // JSON Data MutabeArray
--(NSMutableArray*)jsonData
+-(NSArray*)jsonData
 {
-    if (_jsonData == nil) _jsonData = [[NSMutableArray alloc]init];
+    if (_jsonData == nil) _jsonData = [[NSArray alloc]init];
     return _jsonData;
 }
 
@@ -84,14 +84,29 @@ typedef enum JSONELement{
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
-    JSONELement dataType = [self getDataStructureCode: NSStringFromClass([item class])];
     
     if (item == nil){
-        return [self.jsonData objectAtIndex:index];
+        NSLog(@"%@", self.jsonData);
+        
+        JSONELement dataType = [self getDataStructureCode: NSStringFromClass([self.jsonData class])];
+        if (dataType == JSON_ARRAY) return [self.jsonData objectAtIndex:index];
+        if (dataType == JSON_OBJECT){
+            NSArray *values = [[self.jsonData objectAtIndex:0] allValues];
+            NSArray *keys = [[self.jsonData objectAtIndex:0] allKeys];
+            return [NSString stringWithFormat:@"%@: %@", [keys objectAtIndex:index], [values objectAtIndex:index]];
+        }
     }
-    if (dataType == JSON_ARRAY || dataType == JSON_OBJECT) {
-        NSLog(@"%@", item);
+    
+    JSONELement dataType = [self getDataStructureCode: NSStringFromClass([item class])];
+    if (dataType == JSON_ARRAY) {
+        NSLog(@"Array: %@", item);
         return [item objectAtIndex:index];
+    }
+    if (dataType == JSON_OBJECT) {
+        NSLog(@"Object: %@", item);
+        NSArray *values = [item allValues];
+        NSArray *keys = [item allKeys];
+        return [NSString stringWithFormat:@"%@: %@", [keys objectAtIndex:index], [values objectAtIndex:index]];
     }
     return nil;
 }
@@ -100,23 +115,22 @@ typedef enum JSONELement{
 
 
 // Helpers
-- (void)parseJSONTree:(NSArray *)jsonArray identLevel:(NSInteger)identation {
+- (void)parseJSONTree:(NSArray *)jsonData identLevel:(NSInteger)identation {
     // Debug
-    printf("%s - %lu (%s)", [[self.jsonArea stringValue] UTF8String], (unsigned long)[jsonArray count], [NSStringFromClass([jsonArray class]) UTF8String]);
+    printf("%s - %lu (%s)", [[self.jsonArea stringValue] UTF8String], (unsigned long)[jsonData count], [NSStringFromClass([jsonData class]) UTF8String]);
     printf("\n");
     
     // Single Item
     NSDictionary *structure;
     
     // Parses JSON object
-    for(int i=0; i < [jsonArray count];i++) {
-        structure = [jsonArray objectAtIndex:i];
-        [self.jsonData addObject:structure];
+    for(int i=0; i < [jsonData count];i++) {
+        structure = [jsonData objectAtIndex:i];
+        //[self.jsonData addObject:structure];
     }
 }
 
 - (JSONELement)getDataStructureCode:(NSString *)structureName {
-    NSLog(@"%@", structureName);
     if ([structureName isEqualToString:@"__NSCFNumber"])            return JSON_INTEGER;
     if ([structureName isEqualToString:@"__NSArrayI"])              return JSON_ARRAY;
     if ([structureName isEqualToString:@"__NSCFDictionary"])        return JSON_OBJECT;
@@ -155,7 +169,7 @@ typedef enum JSONELement{
 - (IBAction)clearJsonAreaButtonClicked:(id)sender
 {
     [self.jsonArea setStringValue:@""];
-    [_jsonData removeAllObjects];
+    _jsonData = [[NSArray alloc] init];
     [self.tableView reloadData];
     
 }
@@ -180,10 +194,11 @@ typedef enum JSONELement{
         
     } else {
         // No errors so let's empty the _jsonData array...
-        [_jsonData removeAllObjects];
+        _jsonData = [[NSArray alloc] init];
         
-        // Call recursive parseJsonTree
-        [self parseJSONTree:jsonStructure identLevel:0];
+        // Add the received data to the JsonData variable
+        _jsonData = [[NSArray alloc] initWithObjects:jsonStructure, nil];
+        
         
         // ... and of course reload table data.
         [self.tableView reloadData];
