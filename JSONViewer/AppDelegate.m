@@ -31,6 +31,11 @@ typedef enum JSONELement{
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     [self.jsonArea setStringValue:@""];
+    
+    for (NSTableColumn *tableColumn in self.tableView.tableColumns ) {
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:tableColumn.identifier ascending:YES selector:@selector(compare:)];
+        [tableColumn setSortDescriptorPrototype:sortDescriptor];
+    }
 }
 
 
@@ -72,9 +77,11 @@ typedef enum JSONELement{
         return [self getDataStructureName:dataType];
         
     } else { // name
-        
         if (dataType == JSON_ARRAY || dataType == JSON_OBJECT)
             return [NSString stringWithFormat:@"%@ (%lu)", [self getDataStructureName:dataType], (unsigned long)[item count]];
+        if (dataType == JSON_BOOL){
+            return ([item boolValue] == YES) ? @"TRUE" : @"FALSE";
+        }
         return item;
         
     }
@@ -86,7 +93,7 @@ typedef enum JSONELement{
 {
     
     if (item == nil){
-        NSLog(@"%@", self.jsonData);
+        //NSLog(@"%@", self.jsonData);
         
         JSONELement dataType = [self getDataStructureCode: NSStringFromClass([self.jsonData class])];
         if (dataType == JSON_ARRAY) return [self.jsonData objectAtIndex:index];
@@ -99,11 +106,11 @@ typedef enum JSONELement{
     
     JSONELement dataType = [self getDataStructureCode: NSStringFromClass([item class])];
     if (dataType == JSON_ARRAY) {
-        NSLog(@"Array: %@", item);
+        //NSLog(@"Array: %@", item);
         return [item objectAtIndex:index];
     }
     if (dataType == JSON_OBJECT) {
-        NSLog(@"Object: %@", item);
+        //NSLog(@"Object: %@", item);
         NSArray *values = [item allValues];
         NSArray *keys = [item allKeys];
         return [NSString stringWithFormat:@"%@: %@", [keys objectAtIndex:index], [values objectAtIndex:index]];
@@ -117,8 +124,8 @@ typedef enum JSONELement{
 // Helpers
 - (void)parseJSONTree:(NSArray *)jsonData identLevel:(NSInteger)identation {
     // Debug
-    printf("%s - %lu (%s)", [[self.jsonArea stringValue] UTF8String], (unsigned long)[jsonData count], [NSStringFromClass([jsonData class]) UTF8String]);
-    printf("\n");
+    //printf("%s - %lu (%s)", [[self.jsonArea stringValue] UTF8String], (unsigned long)[jsonData count], [NSStringFromClass([jsonData class]) UTF8String]);
+    //printf("\n");
     
     // Single Item
     NSDictionary *structure;
@@ -169,7 +176,8 @@ typedef enum JSONELement{
 - (IBAction)clearJsonAreaButtonClicked:(id)sender
 {
     [self.jsonArea setStringValue:@""];
-    _jsonData = [[NSArray alloc] init];
+    self.jsonData = nil;
+    self.jsonData = [[NSArray alloc] init];
     [self.tableView reloadData];
     
 }
@@ -193,16 +201,22 @@ typedef enum JSONELement{
         return;
         
     } else {
+        
         // No errors so let's empty the _jsonData array...
-        _jsonData = [[NSArray alloc] init];
+        self.jsonData = nil;
         
         // Add the received data to the JsonData variable
-        _jsonData = [[NSArray alloc] initWithObjects:jsonStructure, nil];
-        
+        self.jsonData = [[NSArray alloc] initWithObjects:jsonStructure, nil];
         
         // ... and of course reload table data.
         [self.tableView reloadData];
     }
+}
+
+- (void)tableView:(NSTableView *)aTableView sortDescriptorsDidChange:(NSArray *)oldDescriptors
+{
+    self.jsonData = [self.jsonData sortedArrayUsingDescriptors: [self.tableView sortDescriptors]];
+    [aTableView reloadData];
 }
 
 - (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
