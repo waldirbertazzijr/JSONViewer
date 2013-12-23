@@ -22,6 +22,7 @@
 @property(weak) IBOutlet NSTableColumn *jsonObjectName;
 @property(weak) IBOutlet NSTableColumn *jsonObjectType;
 @property(weak) IBOutlet NSTableColumn *jsonObjectLength;
+@property(weak) IBOutlet NSTableColumn *jsonObjectKey;
 
 // buttons
 @property(weak) IBOutlet NSButton *clearJsonArea;
@@ -29,7 +30,4 @@
 
 // actions
 - (IBAction)clearJsonAreaButtonClicked:(NSButton *)sender;
-
-// Methods
-- (void)parseJSONTree:(NSArray *)jsonArray identLevel:(NSInteger)integer;
 @end
