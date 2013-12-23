@@ -13,7 +13,7 @@
 
 // Type of JSON elements
 typedef enum JSONELement{
-    JSON_INTEGER,
+    JSON_NUMBER,
     JSON_ARRAY,
     JSON_OBJECT,
     JSON_STRING,
@@ -30,7 +30,7 @@ typedef enum JSONELement{
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    [self.jsonArea setStringValue:@""];
+    [self.jsonArea setStringValue:@"[{\"a\":10, \"b\": 20, \"c\": [10, 20, 30, 40, {\"t\": 10}], \"z\": {\"y\": [10, 200]}}]"];
     
     for (NSTableColumn *tableColumn in self.tableView.tableColumns ) {
         NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:tableColumn.identifier ascending:YES selector:@selector(compare:)];
@@ -69,7 +69,9 @@ typedef enum JSONELement{
     
     if ([[theColumn identifier] isEqualToString:@"itemlength"]) { // length
         
-        if (dataType == JSON_ARRAY || dataType == JSON_OBJECT) return [NSString stringWithFormat:@"%lu", (unsigned long)[item count]];
+        if (dataType == JSON_ARRAY || dataType == JSON_OBJECT){
+            return [NSString stringWithFormat:@"%lu", (unsigned long)[item count]];
+        }
         return @"-";
         
     } else if([[theColumn identifier] isEqualToString:@"itemtype"]) { // type
@@ -96,11 +98,12 @@ typedef enum JSONELement{
         //NSLog(@"%@", self.jsonData);
         
         JSONELement dataType = [self getDataStructureCode: NSStringFromClass([self.jsonData class])];
-        if (dataType == JSON_ARRAY) return [self.jsonData objectAtIndex:index];
+        if (dataType == JSON_ARRAY) {
+            return [self.jsonData objectAtIndex:index];
+        }
         if (dataType == JSON_OBJECT){
             NSArray *values = [[self.jsonData objectAtIndex:0] allValues];
-            NSArray *keys = [[self.jsonData objectAtIndex:0] allKeys];
-            return [NSString stringWithFormat:@"%@: %@", [keys objectAtIndex:index], [values objectAtIndex:index]];
+            return [values objectAtIndex:index];
         }
     }
     
@@ -112,9 +115,9 @@ typedef enum JSONELement{
     if (dataType == JSON_OBJECT) {
         //NSLog(@"Object: %@", item);
         NSArray *values = [item allValues];
-        NSArray *keys = [item allKeys];
-        return [NSString stringWithFormat:@"%@: %@", [keys objectAtIndex:index], [values objectAtIndex:index]];
+        return [values objectAtIndex:index];
     }
+    
     return nil;
 }
 
@@ -138,7 +141,7 @@ typedef enum JSONELement{
 }
 
 - (JSONELement)getDataStructureCode:(NSString *)structureName {
-    if ([structureName isEqualToString:@"__NSCFNumber"])            return JSON_INTEGER;
+    if ([structureName isEqualToString:@"__NSCFNumber"])            return JSON_NUMBER;
     if ([structureName isEqualToString:@"__NSArrayI"])              return JSON_ARRAY;
     if ([structureName isEqualToString:@"__NSCFDictionary"])        return JSON_OBJECT;
     if ([structureName isEqualToString:@"__NSCFString"])            return JSON_STRING;
@@ -149,8 +152,8 @@ typedef enum JSONELement{
 
 - (NSString *)getDataStructureName:(NSInteger)structureCode {
     switch ((int) structureCode) {
-        case JSON_INTEGER:
-            return @"Integer";
+        case JSON_NUMBER:
+            return @"Number";
             break;
         case JSON_STRING:
             return @"String";
