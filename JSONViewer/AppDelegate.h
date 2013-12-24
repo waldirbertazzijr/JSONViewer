@@ -29,6 +29,7 @@
 
 // actions
 - (IBAction)clearJsonAreaButtonClicked:(NSButton *)sender;
+- (IBAction)loadJsonFromURL:(NSMenuItem *)sender;
 
 // Methods
 - (void)parseJSONTree:(NSArray *)jsonArray identLevel:(NSInteger)integer;
