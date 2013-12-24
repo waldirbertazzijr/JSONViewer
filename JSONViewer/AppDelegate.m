@@ -10,7 +10,6 @@
 
 @implementation AppDelegate
 
-
 // Type of JSON elements
 typedef enum JSONELement{
     JSON_NUMBER,
@@ -30,12 +29,12 @@ typedef enum JSONELement{
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    [self.jsonArea setStringValue:@"[{\"a\":10, \"b\": 20, \"c\": [10, 20, 30, 40, {\"t\": 10}], \"z\": {\"y\": [10, 200]}}]"];
-    
     for (NSTableColumn *tableColumn in self.tableView.tableColumns ) {
         NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:tableColumn.identifier ascending:YES selector:@selector(compare:)];
         [tableColumn setSortDescriptorPrototype:sortDescriptor];
     }
+    
+    [self.jsonArea setStringValue:@"[true, true, false, 10.401, {\"a\":10, \"b\": 20, \"c\": [10, 20, 30, 40, {\"t\": 10}], \"z\": {\"y\": [10, 200]}}]"];
 }
 
 
@@ -78,6 +77,11 @@ typedef enum JSONELement{
         
         return [self getDataStructureName:dataType];
         
+    } else if([[theColumn identifier] isEqualToString:@"itemkey"]) { // key
+        
+        NSLog(@"%@", item);
+        return 0;
+        
     } else { // name
         if (dataType == JSON_ARRAY || dataType == JSON_OBJECT)
             return [NSString stringWithFormat:@"%@ (%lu)", [self getDataStructureName:dataType], (unsigned long)[item count]];
@@ -93,29 +97,17 @@ typedef enum JSONELement{
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
-    
+    // There is always one item on jsonData array
     if (item == nil){
-        //NSLog(@"%@", self.jsonData);
-        
-        JSONELement dataType = [self getDataStructureCode: NSStringFromClass([self.jsonData class])];
-        if (dataType == JSON_ARRAY) {
-            return [self.jsonData objectAtIndex:index];
-        }
-        if (dataType == JSON_OBJECT){
-            NSArray *values = [[self.jsonData objectAtIndex:0] allValues];
-            return [values objectAtIndex:index];
-        }
+        return [self.jsonData objectAtIndex:index];
     }
     
     JSONELement dataType = [self getDataStructureCode: NSStringFromClass([item class])];
     if (dataType == JSON_ARRAY) {
-        //NSLog(@"Array: %@", item);
         return [item objectAtIndex:index];
     }
     if (dataType == JSON_OBJECT) {
-        //NSLog(@"Object: %@", item);
-        NSArray *values = [item allValues];
-        return [values objectAtIndex:index];
+        return [[item allValues] objectAtIndex:index];
     }
     
     return nil;
@@ -125,21 +117,6 @@ typedef enum JSONELement{
 
 
 // Helpers
-- (void)parseJSONTree:(NSArray *)jsonData identLevel:(NSInteger)identation {
-    // Debug
-    //printf("%s - %lu (%s)", [[self.jsonArea stringValue] UTF8String], (unsigned long)[jsonData count], [NSStringFromClass([jsonData class]) UTF8String]);
-    //printf("\n");
-    
-    // Single Item
-    NSDictionary *structure;
-    
-    // Parses JSON object
-    for(int i=0; i < [jsonData count];i++) {
-        structure = [jsonData objectAtIndex:i];
-        //[self.jsonData addObject:structure];
-    }
-}
-
 - (JSONELement)getDataStructureCode:(NSString *)structureName {
     if ([structureName isEqualToString:@"__NSCFNumber"])            return JSON_NUMBER;
     if ([structureName isEqualToString:@"__NSArrayI"])              return JSON_ARRAY;
@@ -172,17 +149,21 @@ typedef enum JSONELement{
     return @"Unknown";
 }
 
+// Function that unloads the JSON data from main window.
+- (void) unloadJson
+{
+    self.jsonData = nil;
+    [self.jsonArea setStringValue:@"[true, true, false, 10.401, {\"a\":10, \"b\": 20, \"c\": [10, 20, 30, 40, {\"t\": 10}], \"z\": {\"y\": [10, 200]}}]"];
+    [self.tableView reloadData];
+}
+
 
 
 
 // Actions
 - (IBAction)clearJsonAreaButtonClicked:(id)sender
 {
-    [self.jsonArea setStringValue:@""];
-    self.jsonData = nil;
-    self.jsonData = [[NSArray alloc] init];
-    [self.tableView reloadData];
-    
+    [self unloadJson];
 }
 
 - (IBAction)parseJsonButtonClicked:(id)sender
@@ -202,18 +183,16 @@ typedef enum JSONELement{
         [alert runModal];
         
         return;
-        
-    } else {
-        
-        // No errors so let's empty the _jsonData array...
-        self.jsonData = nil;
-        
-        // Add the received data to the JsonData variable
-        self.jsonData = [[NSArray alloc] initWithObjects:jsonStructure, nil];
-        
-        // ... and of course reload table data.
-        [self.tableView reloadData];
     }
+    
+    // No errors so let's empty the _jsonData array...
+    self.jsonData = nil;
+    
+    // Add the received data to the JsonData variable
+    self.jsonData = [[NSArray alloc] initWithObjects:jsonStructure, nil];
+    
+    // ... and of course reload table data.
+    [self.tableView reloadData];
 }
 
 - (void)tableView:(NSTableView *)aTableView sortDescriptorsDidChange:(NSArray *)oldDescriptors
@@ -224,6 +203,20 @@ typedef enum JSONELement{
 
 - (void)alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
     [[NSApplication sharedApplication] stopModal];
+}
+
+// Shows the window if it has been closed and the user click on Dock Icon
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
+{
+    
+    // Resets the window content
+    [self unloadJson];
+    
+	if( flag == NO ){
+		[self.window makeKeyAndOrderFront:nil];
+	}
+    
+	return YES;
 }
 
 @end
