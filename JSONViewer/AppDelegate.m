@@ -79,7 +79,7 @@ typedef enum JSONELement{
         
     } else if([[theColumn identifier] isEqualToString:@"itemkey"]) { // key
         
-        NSLog(@"%@", item);
+        //NSLog(@"%@", item);
         return 0;
         
     } else { // name

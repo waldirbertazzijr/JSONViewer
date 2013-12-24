@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1080" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -145,19 +145,24 @@
                                     <action selector="selectAll:" target="-1" id="232"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="Zjy-sT-bSr"/>
+                            <menuItem title="Reset" keyEquivalent="X" id="vcR-FJ-NRN">
+                                <connections>
+                                    <action selector="clearJsonAreaButtonClicked:" target="494" id="rMl-Ta-8E7"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Parse JSON" keyEquivalent="P" id="Ste-Fe-Naz">
+                                <connections>
+                                    <action selector="parseJsonButtonClicked:" target="494" id="REw-Vd-auo"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
-                <menuItem title="Teste" id="vKN-Fg-rq3" userLabel="Menu Item - JSON">
-                    <menu key="submenu" title="Teste" id="gPe-LL-mvl">
+                <menuItem title="Remote" id="vKN-Fg-rq3" userLabel="Menu Item - JSON">
+                    <menu key="submenu" title="Remote" id="gPe-LL-mvl">
                         <items>
-                            <menuItem title="Item 1" id="vcR-FJ-NRN">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                            </menuItem>
-                            <menuItem title="Item 2" id="sDF-Th-Dwk">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                            </menuItem>
-                            <menuItem title="Item 3" id="eqU-bq-CM4">
+                            <menuItem title="Load from webservice..." id="sDF-Th-Dwk">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                             </menuItem>
                         </items>
@@ -198,7 +203,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="b0v-Gf-cq2">
-                        <rect key="frame" x="17" y="546" width="81" height="17.000000000000007"/>
+                        <rect key="frame" x="17" y="546" width="81" height="17"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="JSON String:" id="erY-9E-Ler">
                             <font key="font" metaFont="system"/>
@@ -219,24 +224,11 @@
                             <action selector="parseJsonButtonClicked:" target="494" id="ckW-76-WAa"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ina-91-fHc">
-                        <rect key="frame" x="485" y="544" width="44" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="roundRect" title="Clear" bezelStyle="roundedRect" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="d9k-PO-bnw">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="cellTitle"/>
-                            <string key="keyEquivalent">C</string>
-                            <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="clearJsonAreaButtonClicked:" target="494" id="PX7-JZ-MKd"/>
-                        </connections>
-                    </button>
                     <textField translatesAutoresizingMaskIntoConstraints="NO" id="8Rt-0V-PhU">
                         <rect key="frame" x="20" y="422" width="509" height="115"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="115" id="Sg4-Dd-oTQ"/>
+                            <constraint firstAttribute="height" constant="115" id="q5X-Tt-ruf"/>
                         </constraints>
                         <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Enter your JSON here..." drawsBackground="YES" id="S9D-6Y-TTq">
                             <font key="font" size="10" name="Monaco"/>
@@ -251,14 +243,14 @@
                             <rect key="frame" x="1" y="17" width="507" height="335"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" headerView="YWK-8s-WbC" indentationPerLevel="16" outlineTableColumn="IPy-th-TZG" id="Pql-57-Iia">
+                                <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" headerView="YWK-8s-WbC" indentationPerLevel="16" outlineTableColumn="IPy-th-TZG" id="Pql-57-Iia">
                                     <rect key="frame" x="0.0" y="0.0" width="507" height="335"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     <tableColumns>
-                                        <tableColumn identifier="itemval" editable="NO" width="304.84375" minWidth="16" maxWidth="999999999" id="IPy-th-TZG">
+                                        <tableColumn identifier="itemval" editable="NO" width="259.8828125" minWidth="16" maxWidth="999999999" id="IPy-th-TZG">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Content">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -297,7 +289,7 @@
                                             </textFieldCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         </tableColumn>
-                                        <tableColumn identifier="itemlength" editable="NO" width="37.86328125" minWidth="10" maxWidth="3.4028234663852886e+38" id="ZTJ-Xd-tml">
+                                        <tableColumn identifier="itemlength" editable="NO" width="42.86328125" minWidth="10" maxWidth="3.4028234663852886e+38" id="ZTJ-Xd-tml">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Length">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -320,11 +312,11 @@
                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </clipView>
                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="OmR-6C-NSl">
-                            <rect key="frame" x="1" y="370" width="551" height="15"/>
+                            <rect key="frame" x="-7" y="2" width="0.0" height="15"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="PGh-Tb-VoR">
-                            <rect key="frame" x="544" y="17" width="15" height="0.0"/>
+                            <rect key="frame" x="-14" y="9" width="15" height="0.0"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <tableHeaderView key="headerView" id="YWK-8s-WbC">
@@ -332,34 +324,31 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </tableHeaderView>
                     </scrollView>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dSv-UI-gOm">
-                        <rect key="frame" x="504" y="659" width="82" height="32"/>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VmY-5o-izs">
+                        <rect key="frame" x="454" y="544" width="75" height="19"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="70" id="Tgh-Mv-3Mf"/>
-                        </constraints>
-                        <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MVr-C5-VIz">
+                        <buttonCell key="cell" type="roundRect" title="Reset" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0BE-dh-Ms7">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
+                            <font key="font" metaFont="controlContent"/>
                         </buttonCell>
                         <connections>
-                            <action selector="clearJsonAreaButtonClicked:" target="494" id="ZKQ-Cq-MJC"/>
+                            <action selector="clearJsonAreaButtonClicked:" target="494" id="7sf-JP-W11"/>
                         </connections>
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="dSv-UI-gOm" firstAttribute="top" secondItem="372" secondAttribute="top" constant="17" id="3ja-9L-VbT"/>
-                    <constraint firstAttribute="trailing" secondItem="8Rt-0V-PhU" secondAttribute="trailing" constant="20" id="7Jl-Lw-jXU"/>
-                    <constraint firstAttribute="trailing" secondItem="eq0-ru-L9w" secondAttribute="trailing" constant="20" id="KRG-N4-RMH"/>
-                    <constraint firstItem="8Rt-0V-PhU" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="20" id="Lfx-J4-nqY"/>
-                    <constraint firstItem="eq0-ru-L9w" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="20" id="NFh-5b-ETq"/>
-                    <constraint firstItem="eq0-ru-L9w" firstAttribute="top" secondItem="MrH-sA-Ojv" secondAttribute="bottom" constant="20" id="Xbs-j4-aKc"/>
-                    <constraint firstItem="MrH-sA-Ojv" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="20" id="ZbB-Bp-RtQ"/>
-                    <constraint firstAttribute="bottom" secondItem="eq0-ru-L9w" secondAttribute="bottom" constant="20" id="bYe-G8-Agv"/>
-                    <constraint firstAttribute="trailing" secondItem="MrH-sA-Ojv" secondAttribute="trailing" constant="20" id="cGz-KA-VY5"/>
-                    <constraint firstAttribute="trailing" secondItem="dSv-UI-gOm" secondAttribute="trailing" constant="20" id="enX-5s-45F"/>
-                    <constraint firstItem="MrH-sA-Ojv" firstAttribute="top" secondItem="8Rt-0V-PhU" secondAttribute="bottom" constant="8" id="k8h-n0-BXJ"/>
-                    <constraint firstItem="8Rt-0V-PhU" firstAttribute="top" secondItem="dSv-UI-gOm" secondAttribute="bottom" constant="8" id="xVW-lK-9Aa"/>
+                    <constraint firstItem="eq0-ru-L9w" firstAttribute="top" secondItem="MrH-sA-Ojv" secondAttribute="bottom" constant="20" symbolic="YES" id="0ON-9h-On1"/>
+                    <constraint firstItem="8Rt-0V-PhU" firstAttribute="top" secondItem="b0v-Gf-cq2" secondAttribute="bottom" constant="9" id="A4w-64-xD7"/>
+                    <constraint firstItem="8Rt-0V-PhU" firstAttribute="leading" secondItem="MrH-sA-Ojv" secondAttribute="leading" id="NGG-AY-9kl"/>
+                    <constraint firstItem="8Rt-0V-PhU" firstAttribute="trailing" secondItem="MrH-sA-Ojv" secondAttribute="trailing" id="V55-4r-JlQ"/>
+                    <constraint firstItem="eq0-ru-L9w" firstAttribute="leading" secondItem="MrH-sA-Ojv" secondAttribute="leading" id="hDI-it-iTS"/>
+                    <constraint firstItem="MrH-sA-Ojv" firstAttribute="trailing" secondItem="eq0-ru-L9w" secondAttribute="trailing" id="hZM-Mn-sfR"/>
+                    <constraint firstItem="b0v-Gf-cq2" firstAttribute="leading" secondItem="8Rt-0V-PhU" secondAttribute="leading" id="k55-aH-9Up"/>
+                    <constraint firstItem="b0v-Gf-cq2" firstAttribute="top" secondItem="372" secondAttribute="top" constant="20" symbolic="YES" id="l2r-mz-Ch6"/>
+                    <constraint firstItem="b0v-Gf-cq2" firstAttribute="leading" secondItem="372" secondAttribute="leading" constant="20" symbolic="YES" id="mtY-5M-Rjy"/>
+                    <constraint firstItem="MrH-sA-Ojv" firstAttribute="top" secondItem="8Rt-0V-PhU" secondAttribute="bottom" constant="8" symbolic="YES" id="nXQ-BC-6eD"/>
+                    <constraint firstAttribute="bottom" secondItem="eq0-ru-L9w" secondAttribute="bottom" constant="20" symbolic="YES" id="nqI-Wt-NQL"/>
+                    <constraint firstAttribute="trailing" secondItem="8Rt-0V-PhU" secondAttribute="trailing" constant="20" symbolic="YES" id="v5m-eF-SL3"/>
                 </constraints>
             </view>
         </window>
