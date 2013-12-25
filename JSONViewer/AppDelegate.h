@@ -25,9 +25,9 @@
 @property(weak) IBOutlet NSTableColumn *jsonObjectKey;
 
 // buttons
-@property(weak) IBOutlet NSButton *clearJsonArea;
 @property(weak) IBOutlet NSButton *parseJsonArea;
 
 // actions
 - (IBAction)clearJsonAreaButtonClicked:(NSButton *)sender;
+
 @end

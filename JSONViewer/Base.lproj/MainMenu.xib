@@ -159,15 +159,6 @@
                         </items>
                     </menu>
                 </menuItem>
-                <menuItem title="Remote" id="vKN-Fg-rq3" userLabel="Menu Item - JSON">
-                    <menu key="submenu" title="Remote" id="gPe-LL-mvl">
-                        <items>
-                            <menuItem title="Load from webservice..." id="sDF-Th-Dwk">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                            </menuItem>
-                        </items>
-                    </menu>
-                </menuItem>
                 <menuItem title="Window" id="19">
                     <menu key="submenu" title="Window" systemMenu="window" id="24">
                         <items>
@@ -176,6 +167,7 @@
                                     <action selector="performMiniaturize:" target="-1" id="37"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Remote" keyEquivalent="R" id="sDF-Th-Dwk"/>
                         </items>
                     </menu>
                 </menuItem>
@@ -329,7 +321,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="roundRect" title="Reset" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="0BE-dh-Ms7">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="controlContent"/>
+                            <font key="font" metaFont="cellTitle"/>
                         </buttonCell>
                         <connections>
                             <action selector="clearJsonAreaButtonClicked:" target="494" id="7sf-JP-W11"/>
