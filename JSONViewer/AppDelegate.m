@@ -22,6 +22,7 @@ typedef enum JSONELement{
 
 // JSON Data MutabeArray
 -(NSArray*)jsonData
+
 {
     if (_jsonData == nil) _jsonData = [[NSArray alloc]init];
     return _jsonData;
@@ -66,33 +67,16 @@ typedef enum JSONELement{
 {
     JSONELement dataType = [self getDataStructureCode: NSStringFromClass([item class])];
     
-    if ([[theColumn identifier] isEqualToString:@"itemlength"]) { // length
-        
-        if (dataType == JSON_ARRAY || dataType == JSON_OBJECT){
-            return [NSString stringWithFormat:@"%lu", (unsigned long)[item count]];
-        }
-        return @"-";
-        
-    } else if([[theColumn identifier] isEqualToString:@"itemtype"]) { // type
-        
-        return [self getDataStructureName:dataType];
-        
-    } else if([[theColumn identifier] isEqualToString:@"itemkey"]) { // key
-        
-        //NSLog(@"%@", item);
-        return 0;
-        
-    } else { // name
-        if (dataType == JSON_ARRAY || dataType == JSON_OBJECT)
-            return [NSString stringWithFormat:@"%@ (%lu)", [self getDataStructureName:dataType], (unsigned long)[item count]];
-        if (dataType == JSON_BOOL){
-            return ([item boolValue] == YES) ? @"TRUE" : @"FALSE";
-        }
-        return item;
-        
+    NSLog(@"[>>]%@", self.jsonData);
+    NSLog(@"[>>>]%@", item);
+    
+    if (dataType == JSON_ARRAY || dataType == JSON_OBJECT)
+        return [NSString stringWithFormat:@"%@ (%lu)", [self getDataStructureName:dataType], (unsigned long)[item count]];
+    if (dataType == JSON_BOOL){
+        return ([item boolValue] == YES) ? @"TRUE" : @"FALSE";
     }
     
-    return nil;
+    return item;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
